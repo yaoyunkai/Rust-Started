@@ -15,7 +15,9 @@ fn main() {
 
     // test_create_twice_reference();
 
-    test_dangling_references();
+    // test_dangling_references();
+
+    // test_get_first_word();
 }
 
 fn test_string() {
@@ -227,8 +229,21 @@ fn no_dangle() -> String {
 
 // --------------------------------------------------------------------------------
 
+fn test_get_first_word() {
+    /*
+    不得不时刻担心 word 的索引与 s 中的数据不再同步
+
+    */
+
+    let mut s = String::from("hello world");
+    let num = first_word(&s);
+    s.clear();
+    println!("the length is: {}", num);
+}
+
 fn first_word(s: &String) -> usize {
     let bytes = s.as_bytes();
+    // println!("bytes is: {}", bytes);
 
     for (i, &item) in bytes.iter().enumerate() {
         if item == b' ' {
@@ -237,4 +252,41 @@ fn first_word(s: &String) -> usize {
     }
 
     s.len()
+}
+
+// --------------------------------------------------------------------------------
+
+fn test_string_slice() {
+    /*
+    由中括号中的 [starting_index..ending_index] 指定的 range 创建一个 slice
+    slice 的数据结构存储了 slice 的开始位置和长度，长度对应于 ending_index 减去 starting_index 的值。
+
+    字符串 slice range 的索引必须位于有效的 UTF-8 字符边界内，
+    如果尝试从一个多字节字符的中间位置创建字符串 slice，则程序将会因错误而退出。
+
+    */
+    let s = String::from("hello world");
+    let hello = &s[0..5];
+    let world = &s[6..11];
+
+    let slice = &s[0..2];
+    let slice = &s[..2];
+
+    let slice = &s[3..len];
+    let slice = &s[3..];
+
+    let slice = &s[0..len];
+    let slice = &s[..];
+}
+
+fn first_word_new(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
 }
