@@ -106,3 +106,27 @@ println!("{}, {}", r1, r2);
 
 *slice* 允许你引用集合中一段连续的元素序列，而不用引用整个集合。slice 是一类引用，所以它没有所有权。
 
+### 字符串字面量是slice
+
+```rust
+let s = "Hello, world!";
+```
+
+这里 `s` 的类型是 `&str`：它是一个指向二进制程序特定位置的 slice。这也就是为什么字符串字面值是不可变的；`&str` 是一个不可变引用。
+
+### 字符串slice作为参数
+
+在知道了能够获取字面值和 `String` 的 slice 后，我们对 `first_word` 做了改进，这是它的签名：
+
+```rust
+fn first_word(s: &String) -> &str {
+```
+
+而更有经验的 Rustacean 会编写出示例 4-9 中的签名，因为它使得可以对 `&String` 值和 `&str` 值使用相同的函数：
+
+```rust
+fn first_word(s: &str) -> &str {
+```
+
+如果有一个字符串 slice，可以直接传递它。如果有一个 `String`，则可以传递整个 `String` 的 slice 或对 `String` 的引用。
+

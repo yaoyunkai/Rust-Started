@@ -18,6 +18,8 @@ fn main() {
     // test_dangling_references();
 
     // test_get_first_word();
+
+    test_get_first_word_new();
 }
 
 fn test_string() {
@@ -266,20 +268,55 @@ fn test_string_slice() {
 
     */
     let s = String::from("hello world");
+
     let hello = &s[0..5];
     let world = &s[6..11];
 
     let slice = &s[0..2];
     let slice = &s[..2];
 
-    let slice = &s[3..len];
+    let slice = &s[3..s.len()];
     let slice = &s[3..];
 
-    let slice = &s[0..len];
+    let slice = &s[0..s.len()];
     let slice = &s[..];
 }
 
-fn first_word_new(s: &String) -> &str {
+fn test_get_first_word_new() {
+    /*
+    当拥有某值的不可变引用时，就不能再获取一个可变引用。因为 clear 需要清空 String，它尝试获取一个可变引用。
+
+    */
+
+    let mut s = String::from("hello world");
+
+    let word = first_word_new(&s);
+    s.clear(); // 错误！
+    // println!("the first word is: {}", word);
+}
+
+fn test_put_parameters() {
+    let my_string = String::from("hello world");
+
+    // `first_word` 适用于 `String`（的 slice），部分或全部
+    let word = first_word_new(&my_string[0..6]);
+    let word = first_word_new(&my_string[..]);
+    // `first_word` 也适用于 `String` 的引用，
+    // 这等价于整个 `String` 的 slice
+    let word = first_word_new(&my_string);
+
+    let my_string_literal = "hello world";
+
+    // `first_word` 适用于字符串字面值，部分或全部
+    let word = first_word_new(&my_string_literal[0..6]);
+    let word = first_word_new(&my_string_literal[..]);
+
+    // 因为字符串字面值已经 **是** 字符串 slice 了，
+    // 这也是适用的，无需 slice 语法！
+    let word = first_word_new(my_string_literal);
+}
+
+fn first_word_new(s: &str) -> &str {
     let bytes = s.as_bytes();
 
     for (i, &item) in bytes.iter().enumerate() {
