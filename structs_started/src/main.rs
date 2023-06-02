@@ -35,6 +35,8 @@ fn main() {
     // println!("user email: {}", user1.email);
 
     // test_struct_update_syntax();
+
+    struct_demo1();
 }
 
 
@@ -89,3 +91,78 @@ fn test_tuple_structs() {
 
 // -------------------------------------------------------------
 
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+
+impl Rectangle {
+    // fn area(self: &Self) -> u32 {
+    // fn area(&mut self) -> u32 {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+
+    // 相当于静态方法
+    // 使用结构体名和 :: 语法来调用这个关联函数：比如 let sq = Rectangle::square(3);
+    fn square(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size,
+        }
+    }
+}
+
+fn struct_demo1() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    // println!("{:#?}", rect1);
+
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        area(&rect1)
+    );
+
+    println!("the area of rectangle is {}", rect1.area());
+
+    // --------------------------------------------------------
+
+    // let scale = 2;
+    // let rect1 = Rectangle {
+    //     width: dbg!(30 * scale),
+    //     height: 50,
+    // };
+    //
+    // dbg!(&rect1);
+
+    // --------------------------------------------------------
+
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+    let rect2 = Rectangle {
+        width: 10,
+        height: 40,
+    };
+    let rect3 = Rectangle {
+        width: 60,
+        height: 45,
+    };
+
+    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
+    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
+}
+
+fn area(rectangle: &Rectangle) -> u32 {
+    rectangle.width * rectangle.height
+}
