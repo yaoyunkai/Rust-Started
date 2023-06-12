@@ -23,7 +23,7 @@ fn main() {
 
     test_hash_map();
 
-    test_open_file();
+    // test_open_file();
 }
 
 
