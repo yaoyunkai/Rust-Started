@@ -2,11 +2,18 @@
 trait
 相当于接口 interface
 
+这个限制是被称为 相干性（coherence）的程序属性的一部分，
+或者更具体的说是 孤儿规则（orphan rule），其得名于不存在父类型。
+
+如果想要对 NewsArticle 实例使用这个默认实现，
+可以通过 impl Summary for NewsArticle {} 指定一个空的 impl 块。
 
 */
 
 pub trait Summary {
-    fn summarize(&self) -> String;
+    fn summarize(&self) -> String {
+        String::from("(Read more...)")
+    }
 }
 
 pub struct NewsArticle {
