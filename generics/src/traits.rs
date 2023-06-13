@@ -2,6 +2,8 @@
 trait
 相当于接口 interface
 
+但是不能为外部类型实现外部 trait
+
 这个限制是被称为 相干性（coherence）的程序属性的一部分，
 或者更具体的说是 孤儿规则（orphan rule），其得名于不存在父类型。
 
@@ -9,6 +11,10 @@ trait
 可以通过 impl Summary for NewsArticle {} 指定一个空的 impl 块。
 
 */
+
+
+use std::fmt::Debug;
+use std::fmt::Display;
 
 pub trait Summary {
     fn summarize(&self) -> String {
@@ -55,4 +61,53 @@ pub fn test_use_trait() {
     };
 
     println!("1 new tweet: {}", tweet.summarize());
+}
+
+
+pub fn notify1(item: &impl Summary) {
+    /*
+    将trait作为参数
+
+    */
+    println!("Breaking news! {}", item.summarize());
+}
+
+
+pub fn notify2<T: Summary>(item: &T) {
+    /*
+    Trait Bound 语法
+
+    */
+    println!("Breaking news! {}", item.summarize());
+}
+
+pub fn notify3(item1: &impl Summary, item2: &impl Summary) {}
+
+pub fn notify4<T: Summary>(item1: &T, item2: &T) {}
+
+pub fn notify5(item: &(impl Summary + Display)) {}
+
+pub fn notify6<T: Summary + Display>(item: &T) {
+    println!("Haha, {}", item.summarize());
+}
+
+fn some_function<T, U>(t: &T, u: &U) -> i32
+    where
+        T: Display + Clone,
+        U: Clone + Debug,
+{
+    0
+}
+
+
+// TODO 为什么不需要 & 符号
+fn returns_summarizable() -> impl Summary {
+    Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from(
+            "of course, as you probably already know, people",
+        ),
+        reply: false,
+        retweet: false,
+    }
 }
