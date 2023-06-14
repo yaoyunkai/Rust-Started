@@ -111,3 +111,53 @@ fn returns_summarizable() -> impl Summary {
         retweet: false,
     }
 }
+
+// fn returns_summarizable2(switch: bool) -> impl Summary {
+//     if switch {
+//         NewsArticle {
+//             headline: String::from(
+//                 "Penguins win the Stanley Cup Championship!",
+//             ),
+//             location: String::from("Pittsburgh, PA, USA"),
+//             author: String::from("Iceburgh"),
+//             content: String::from(
+//                 "The Pittsburgh Penguins once again are the best \
+//                  hockey team in the NHL.",
+//             ),
+//         }
+//     } else {
+//         Tweet {
+//             username: String::from("horse_ebooks"),
+//             content: String::from(
+//                 "of course, as you probably already know, people",
+//             ),
+//             reply: false,
+//             retweet: false,
+//         }
+//     }
+// }
+
+struct Pair<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Pair<T> {
+    fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+impl<T: Display + PartialOrd> Pair<T> {
+    /*
+    通过使用带有 trait bound 的泛型参数的 impl 块，可以有条件地只为那些实现了特定 trait 的类型实现方法。
+
+    */
+    fn cmp_display(&self) {
+        if self.x >= self.y {
+            println!("The largest member is x = {}", self.x);
+        } else {
+            println!("The largest member is y = {}", self.y);
+        }
+    }
+}
