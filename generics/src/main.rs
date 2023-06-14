@@ -1,8 +1,10 @@
-use crate::traits::test_use_trait;
+use crate::lifetime::{test_longest, test_longest2};
 
 mod generics;
 mod struct_generics;
 mod traits;
+mod lifetime;
+
 
 fn main() {
     // println!("Hello, world!");
@@ -16,5 +18,10 @@ fn main() {
 
     // test_point();
 
-    test_use_trait();
+    // test_use_trait();
+
+    // test_dangling_references();
+
+    test_longest();
+    test_longest2();
 }
