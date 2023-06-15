@@ -23,6 +23,7 @@
 在具有指针的语言中，很容易通过释放内存时保留指向它的指针而错误地生成一个 悬垂指针（dangling pointer），
 所谓悬垂指针是其指向的内存可能已经被分配给其它持有者。
 
+在Rust中，方法调用使用::和.两种不同的语法来区分静态方法和实例方法的调用方式。
 
 ------------------------------------------------------------------------------------
 
@@ -35,6 +36,11 @@ Rust 中的每一个引用都有其 生命周期（lifetime），也就是引用
 生命周期注解并不改变任何引用的生命周期的长短。
 相反它们描述了多个引用生命周期相互的关系，而不影响其生命周期。
 与当函数签名中指定了泛型类型参数后就可以接受任何类型一样，当指定了泛型生命周期后函数也能接受任何生命周期的引用。
+
+
+生命周期省略规则（lifetime elision rules）
+函数或方法的参数的生命周期被称为 输入生命周期（input lifetimes），
+而返回值的生命周期被称为 输出生命周期（output lifetimes）。
 
 
 */
@@ -89,6 +95,16 @@ pub fn test_longest2() {
     }
 }
 
+pub fn test_longest3() {
+    let string1 = String::from("long string is long");
+    let result;
+    {
+        let string2 = String::from("xyz");
+        result = longest_new(string1.as_str(), string2.as_str());
+    }
+    // println!("The longest string is {}", result);
+}
+
 
 pub fn test_longest() {
     let string1 = String::from("abcd");
@@ -96,6 +112,9 @@ pub fn test_longest() {
 
     let result = longest_new(string1.as_str(), string2);
     println!("The longest string is {}", result);
+
+    println!("String1: {}", string1);
+    println!("String2: {}", string2);
 }
 
 // fn longest(x: &str, y: &str) -> &str {
@@ -112,9 +131,29 @@ pub fn test_longest() {
 // }
 
 fn longest_new<'a, >(x: &'a str, y: &'a str) -> &'a str {
+    /*
+    longest 函数返回的引用的生命周期应该与传入参数的生命周期中较短那个保持一致
+
+    */
+
     if x.len() > y.len() {
         x
     } else {
         y
     }
+}
+
+
+// ----------------------------------------------------------------------------
+
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+fn test_struct_lifetime() {
+    let novel = String::from("Call me Ishmael. Some years ago...");
+    let first_sentence = novel.split('.').next().expect("Could not find a '.'");
+    let i = ImportantExcerpt {
+        part: first_sentence,
+    };
 }
