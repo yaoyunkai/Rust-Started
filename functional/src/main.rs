@@ -1,6 +1,7 @@
-use crate::functional_features::closures::test_closure_new_thread;
+use crate::functional_features::iterators::iterator_sum;
 
 mod functional_features;
+mod cargo_mores;
 
 
 fn main() {
@@ -13,5 +14,7 @@ fn main() {
 
     // test_closure_mut_borrow();
 
-    test_closure_new_thread();
+    // test_closure_new_thread();
+
+    iterator_sum();
 }
