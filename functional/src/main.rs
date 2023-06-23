@@ -1,7 +1,8 @@
-use crate::functional_features::iterators::iterator_sum;
+use crate::smart_pointers::box_usages::start_use_box;
 
 mod functional_features;
 mod cargo_mores;
+mod smart_pointers;
 
 
 fn main() {
@@ -16,5 +17,7 @@ fn main() {
 
     // test_closure_new_thread();
 
-    iterator_sum();
+    // iterator_sum();
+
+    start_use_box();
 }
